@@ -35,7 +35,6 @@ class Main {
                 start++;
             }
             else {
-                if (start > 0) start--;
                 end--;
             }
         }
