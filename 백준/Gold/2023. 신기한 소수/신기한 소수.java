@@ -1,46 +1,43 @@
 import java.util.Scanner;
 
-public class Main {
-	private static int digit;
-	private static StringBuilder answer;
-	
-	private static boolean isPrime(int num) {
-		if(num % 2 == 0)
-			return false;
-		
-		for(int i = 2; i <= num/2; i++) {
-			if(num % i == 0)
-				return false;
-		}
-		
-		return true;
-	}
-	
-	private static void dfs(int n, int d) {
-		if(d == digit) { // 자릿수 초과시
-			answer.append(n+"\n");
-			return;
-		}
-		
-		for(int i = 1; i < 10; i+=2) { // 1,3,5,7,9
-			int tmp = i + n*10;
-			
-			if(isPrime(tmp)) {
-				dfs(tmp, d+1);
-			}
-		}
-	}
-	
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		digit = Integer.parseInt(sc.next());
-		answer = new StringBuilder();
-		
-		dfs(2, 1);
-		dfs(3, 1);
-		dfs(5, 1);
-		dfs(7, 1);
-		
-		System.out.println(answer.toString());
-	}
+class Main {
+    static int N;
+    static StringBuilder res;
+
+    static boolean isPrime(int n) {
+        for (int i = 2; (i * i) <= n; i++) {
+            if (n % i == 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    static void DFS(int n, int depth) {
+        if (depth == N) {
+            res.append(n).append("\n");
+            return;
+        }
+
+        for (int i = 1; i <= 9; i += 2) {
+            int num = n * 10 + i;
+
+            if (isPrime(num)) {
+                DFS(num, depth + 1);
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        N = new Scanner(System.in).nextInt();
+        res = new StringBuilder();
+
+        DFS(2, 1);
+        DFS(3, 1);
+        DFS(5, 1);
+        DFS(7, 1);
+
+        System.out.println(res.toString());
+    }
 }
