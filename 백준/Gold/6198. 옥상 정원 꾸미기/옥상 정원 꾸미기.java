@@ -30,7 +30,7 @@ class Main {
             idx[stack.removeLast()] = N - 1;
         }
 
-        long sum = 0;
+        long sum = 0; // 가능한 최대값이 21억을 초과하므로 long 사용
 
         for (int i = 0; i < N; i++) {
             sum += idx[i] - i;
