@@ -1,24 +1,10 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.PriorityQueue;
 import java.util.StringTokenizer;
-
-class Edge implements Comparable<Edge> {
-    public int vertex, weight;
-
-    public Edge(int v, int w) {
-        vertex = v;
-        weight = w;
-    }
-
-    @Override
-    public int compareTo(Edge o) {
-        return Integer.compare(weight, o.weight);
-    }
-}
 
 class Main {
     public static void main(String[] args) throws IOException {
@@ -43,31 +29,33 @@ class Main {
             graph[from].add(to);
         }
 
-        // Dijkstra
+        // BFS
         int[] dist = new int[N + 1];
-        Arrays.fill(dist, Integer.MAX_VALUE);
+        boolean[] visited = new boolean[N + 1];
 
-        PriorityQueue<Edge> pq = new PriorityQueue<>();
-        pq.add(new Edge(X, 0));
+        Arrays.fill(dist, -1);
+        ArrayDeque<Integer> queue = new ArrayDeque<>();
+
         dist[X] = 0;
+        queue.addLast(X);
+        visited[X] = true;
 
-        while (!pq.isEmpty()) {
-            Edge curr = pq.poll();
+        while (!queue.isEmpty()) {
+            int curr = queue.removeFirst();
 
-            if (curr.weight > dist[curr.vertex]) {
+            if (dist[curr] >= K) {
                 continue;
             }
 
-            for (int v : graph[curr.vertex]) {
-                int newDist = curr.weight + 1;
-
-                if (newDist < dist[v]) {
-                    dist[v] = newDist;
-                    pq.add(new Edge(v, newDist));
+            for (int v : graph[curr]) {
+                if (!visited[v]) {
+                    queue.addLast(v);
+                    visited[v] = true;
+                    dist[v] = dist[curr] + 1;
                 }
             }
         }
-
+        
         StringBuilder res = new StringBuilder();
 
         for (int i = 1; i <= N; i++) {
@@ -81,5 +69,6 @@ class Main {
         } else {
             System.out.println(-1);
         }
+
     }
 }
