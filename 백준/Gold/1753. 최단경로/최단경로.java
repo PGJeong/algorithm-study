@@ -7,7 +7,7 @@ import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 class Node implements Comparable<Node> {
-    int vertex, weight;
+    public int vertex, weight;
 
     public Node(int v, int w) {
         vertex = v;
@@ -16,7 +16,7 @@ class Node implements Comparable<Node> {
 
     @Override
     public int compareTo(Node o) {
-        return weight - o.weight;
+        return Integer.compare(weight, o.weight);
     }
 }
 
@@ -24,45 +24,42 @@ class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        StringBuilder res = new StringBuilder();
 
-        int V = Integer.parseInt(st.nextToken());
-        int E = Integer.parseInt(st.nextToken());
-        int K = Integer.parseInt(br.readLine()); // start vertex
-
+        int V = Integer.parseInt(st.nextToken()); // 정점 개수
+        int E = Integer.parseInt(st.nextToken()); // 간선 개수
+        int S = Integer.parseInt(br.readLine());  // 시작 정점
         ArrayList<Node>[] graph = new ArrayList[V + 1];
 
         for (int i = 1; i <= V; i++) {
             graph[i] = new ArrayList<>();
         }
 
-        for (int i = 0; i < E; i++) {
+        for (int i = 1; i <= E; i++) {
             st = new StringTokenizer(br.readLine());
-            int u = Integer.parseInt(st.nextToken()); // from
-            int v = Integer.parseInt(st.nextToken()); // to
-            int w = Integer.parseInt(st.nextToken()); // weight
+            int from = Integer.parseInt(st.nextToken());
+            int to = Integer.parseInt(st.nextToken());
+            int weight = Integer.parseInt(st.nextToken());
 
-            graph[u].add(new Node(v, w));
+            graph[from].add(new Node(to, weight));
         }
 
         // Dijkstra
-        PriorityQueue<Node> pq = new PriorityQueue<>();
-        boolean[] visited = new boolean[V + 1];
         int[] dist = new int[V + 1];
-
         Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[S] = 0;
 
-        pq.add(new Node(K, 0));
-        dist[K] = 0;
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        pq.add(new Node(S, 0));
 
         while (!pq.isEmpty()) {
-            Node cur = pq.poll();
-            visited[cur.vertex] = true;
+            Node curr = pq.poll();
 
-            for (Node n : graph[cur.vertex]) {
-                if (visited[n.vertex]) continue;
+            if (curr.weight > dist[curr.vertex]) {
+                continue;
+            }
 
-                int newDist = cur.weight + n.weight;
+            for (Node n : graph[curr.vertex]) {
+                int newDist = curr.weight + n.weight;
 
                 if (newDist < dist[n.vertex]) {
                     dist[n.vertex] = newDist;
@@ -71,9 +68,14 @@ class Main {
             }
         }
 
+        StringBuilder res = new StringBuilder();
+
         for (int i = 1; i <= V; i++) {
-            if (dist[i] == Integer.MAX_VALUE) res.append("INF\n");
-            else res.append(dist[i]).append("\n");
+            if (dist[i] == Integer.MAX_VALUE) {
+                res.append("INF").append("\n");
+            } else {
+                res.append(dist[i]).append("\n");
+            }
         }
 
         System.out.println(res);
