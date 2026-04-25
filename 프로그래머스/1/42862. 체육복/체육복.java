@@ -1,37 +1,40 @@
-import java.util.*;
-
 class Solution {
     public int solution(int n, int[] lost, int[] reserve) {
-        HashSet<Integer> los = new HashSet<>(); // 도난 여부
-        HashSet<Integer> res = new HashSet<>(); // 여벌 여부
+        int[] students = new int[n + 2];
         
+        // 도난당한 학생은 -1
         for (int l : lost) {
-            los.add(l);
+            students[l]--;
         }
         
+        // 여벌이 있는 학생은 +1
         for (int r : reserve) {
-            res.add(r);
+            students[r]++;
         }
         
-        Arrays.sort(reserve);
-        
-        int cnt = 0; // 빌려준 체육복 수
-        
-        for (int r : reserve) {
-            if (los.contains(r)) {
-                cnt++;
-                los.remove(r);
-                
-            } else if (!res.contains(r - 1) && los.contains(r - 1)) {
-                cnt++;
-                los.remove(r - 1);
-                
-            } else if (!res.contains(r + 1) && los.contains(r + 1)) {
-                cnt++;
-                los.remove(r + 1);
+        for (int i = 1; i <= n; i++) {
+            if (students[i] < 0) {
+                if (students[i - 1] >= 1) {
+                    // 왼쪽에서 빌리기
+                    students[i]++;
+                    students[i - 1]--;
+                    
+                } else if (students[i + 1] >= 1) {
+                    // 오른쪽에서 빌리기
+                    students[i]++;
+                    students[i + 1]--;
+                }
             }
         }
         
-        return n - lost.length + cnt;
+        int answer = 0;
+        
+        for (int i = 1; i <= n; i++) {
+            if (students[i] >= 0) {
+                answer++;
+            }
+        }
+        
+        return answer;
     }
 }
