@@ -9,12 +9,8 @@ class Solution {
         }
         
         for (String number : phone_book) {
-            StringBuilder tmp = new StringBuilder();
-            
-            for (int i = 0; i < number.length() - 1; i++) {
-                tmp.append(number.charAt(i));
-                
-                if (set.contains(tmp.toString())) return false;
+            for (int i = 0; i < number.length() - 1; i++) { // 자기자신 비교 방지
+                if (set.contains(number.substring(0, i + 1))) return false; // 0 ~ i-1까지 파싱
             }
         }
         
