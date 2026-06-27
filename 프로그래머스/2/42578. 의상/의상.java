@@ -6,12 +6,12 @@ class Solution {
     
     void dfs(int sum, int index) {
         if (index == count.length) {
-            answer += sum;
+            answer += sum; // 경우의 수 합산
             return;
         }
         
-        dfs(sum * count[index], index + 1);
-        dfs(sum, index + 1);
+        dfs(sum * count[index], index + 1); // 해당 종류를 착용한 경우
+        dfs(sum, index + 1); // 해당 종류를 착용하지 않은 경우
     }
     
     public int solution(String[][] clothes) {
