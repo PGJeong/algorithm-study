@@ -20,7 +20,7 @@ class Music implements Comparable<Music> {
 class Solution {
     public int[] solution(String[] genres, int[] plays) {
         HashMap<String, Integer> sum = new HashMap<>(); // 장르별 재생횟수 합계
-        HashMap<String, PriorityQueue<Music>> list = new HashMap(); // 장르별 재생횟수 목록
+        HashMap<String, PriorityQueue<Music>> list = new HashMap<>(); // 장르별 재생횟수 목록
         
         for (int i = 0; i < genres.length; i++) {
             String genre = genres[i]; // 장르
@@ -28,7 +28,7 @@ class Solution {
             
             sum.put(genre, sum.getOrDefault(genre, 0) + play);
             
-            PriorityQueue pq = list.getOrDefault(genre, new PriorityQueue<Music>());
+            PriorityQueue<Music> pq = list.getOrDefault(genre, new PriorityQueue<Music>());
             pq.add(new Music(genre, play, i));
             list.put(genre, pq);
         }
