@@ -7,8 +7,7 @@ class Solution {
         int outH = Integer.parseInt(outTime[0]);
         int outM = Integer.parseInt(outTime[1]);
         
-        if (outM < inM) return (outH - inH - 1) * 60 + (60 + outM - inM);
-        else return (outH - inH) * 60 + (outM - inM);
+        return (outH * 60 + outM) - (inH * 60 + inM);
     }
     
     public int[] solution(int[] fees, String[] records) {
@@ -45,8 +44,8 @@ class Solution {
         int index = 0;
         
         while (!total.isEmpty()) {
-            int totalM = total.get(total.firstKey());
-            total.remove(total.firstKey()); // 제거 필수
+            Map.Entry<String, Integer> first = total.pollFirstEntry();
+            int totalM = first.getValue();
             
             if (totalM <= fees[0]) {
                 // 기본시간 이하
