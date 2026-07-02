@@ -10,8 +10,8 @@ class Solution {
         }
         
         ArrayList<Integer> list = new ArrayList<>();
-        int lastDay = 0; // 마지막 배포일
-        int deploys = 0; // 현재 배포 Count
+        int lastDay = q.removeFirst(); // 마지막 배포일
+        int deploys = 1; // 현재 배포 Count
         
         while (!q.isEmpty()) {
             int currDay = q.removeFirst();
@@ -26,15 +26,8 @@ class Solution {
             }
         }
         
-        list.remove(0);
         list.add(deploys);
         
-        int[] res = new int[list.size()];
-        
-        for (int i = 0; i < res.length; i++) {
-            res[i] = list.get(i);
-        }
-        
-        return res;
+        return list.stream().mapToInt(Integer::intValue).toArray();
     }
 }
