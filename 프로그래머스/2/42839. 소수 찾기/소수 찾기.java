@@ -11,7 +11,7 @@ class Solution {
         
         if (n < 2) return;
         
-        for (int i = 2; i < (n / 2) + 1; i++) {
+        for (int i = 2; (i*i) <= n; i++) {
             if (n % i == 0) return;
         }
         
@@ -27,7 +27,6 @@ class Solution {
             if (!isSelected[i]) {
                 isSelected[i] = true;
                 makeNumber(n + numbers.charAt(i), numbers);
-                makeNumber(n, numbers);
                 isSelected[i] = false;
             }
         }
